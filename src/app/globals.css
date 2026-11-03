@@ -1,0 +1,91 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #09090D;
+  --foreground: #F8FAFC;
+  --card-bg: #111118;
+  --card-border: rgba(255, 255, 255, 0.08);
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #09090D;
+}
+::-webkit-scrollbar-thumb {
+  background: #2D2240;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #4C316C;
+}
+
+/* Glassmorphism utility */
+.glass-panel {
+  background: rgba(18, 18, 26, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-card {
+  background: linear-gradient(180deg, rgba(26, 26, 38, 0.8) 0%, rgba(17, 17, 24, 0.95) 100%);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card:hover {
+  border-color: rgba(236, 72, 153, 0.3);
+  box-shadow: 0 10px 30px -10px rgba(236, 72, 153, 0.15);
+  transform: translateY(-2px);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #FF6EA7 0%, #C084FC 50%, #818CF8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-btn {
+  background: linear-gradient(135deg, #EC4899 0%, #8B5CF6 100%);
+  box-shadow: 0 4px 20px -2px rgba(236, 72, 153, 0.35);
+  transition: all 0.25s ease;
+}
+
+.gradient-btn:hover {
+  background: linear-gradient(135deg, #DB2777 0%, #7C3AED 100%);
+  box-shadow: 0 6px 25px 0px rgba(236, 72, 153, 0.5);
+  transform: translateY(-1px);
+}
+
+.gradient-border-box {
+  position: relative;
+  border-radius: 1rem;
+  background: #111118;
+}
+
+.gradient-border-box::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.4), rgba(139, 92, 246, 0.4));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
