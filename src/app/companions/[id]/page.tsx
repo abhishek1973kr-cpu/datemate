@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { Companion, Review } from "@/types";
 import { getStoredCompanions, getStoredReviews } from "@/lib/store";
+import { firestoreSubscribeCompanions } from "@/lib/firebase";
 import { BookingModal } from "@/components/booking/BookingModal";
 import {
   Star,
@@ -45,6 +46,20 @@ export default function CompanionDetailPage() {
       const compReviews = allReviews.filter((r) => r.companionId === found.id);
       setReviews(compReviews.length > 0 ? compReviews : allReviews.slice(0, 2));
     }
+
+    // Live Real-Time Firestore Sync with Admin Panel updates
+    const unsub = firestoreSubscribeCompanions((firestoreList) => {
+      if (firestoreList && firestoreList.length > 0) {
+        const liveFound = firestoreList.find((c: any) => c.id === companionId);
+        if (liveFound) {
+          setCompanion(liveFound);
+        }
+      }
+    });
+
+    return () => {
+      if (unsub) unsub();
+    };
   }, [companionId]);
 
   if (!companion) {
