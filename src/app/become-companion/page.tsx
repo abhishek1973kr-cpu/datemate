@@ -24,7 +24,7 @@ import {
 } from "lucide-react";
 
 export default function BecomeCompanionPage() {
-  const { user, switchRole } = useAuth();
+  const { user } = useAuth();
 
   const [fullName, setFullName] = useState("");
   const [gender, setGender] = useState<Gender>("female");

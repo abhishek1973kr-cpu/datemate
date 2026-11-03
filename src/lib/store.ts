@@ -26,14 +26,22 @@ export const DEMO_ADMIN: User = {
 export const DEMO_CLIENT: User = {
   id: "user-client-1",
   name: "Karan Singhal",
+  username: "karan",
   email: "karan.singhal@example.com",
   phone: "+91 98111 22334",
   role: "user",
   age: 26,
+  dob: "1998-04-12",
+  fullAddress: "Flat 502, Green Glen Layout, Bellandur",
   city: "Delhi",
   state: "Delhi",
   isAgeVerified: true,
   authProvider: "google",
+  googleVerified: true,
+  hasPaidRegistrationFee: true,
+  registrationTransactionId: "pay_rzp_usr_99_demo",
+  registrationFeeAmount: 99,
+  registrationFeePaidAt: "2026-02-01T10:05:00Z",
   avatarUrl: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80",
   createdAt: "2026-02-01T10:00:00Z"
 };
@@ -41,15 +49,20 @@ export const DEMO_CLIENT: User = {
 export const DEMO_COMPANION_USER: User = {
   id: "user-comp-1",
   name: "Aanya Sharma",
+  username: "aanya",
   email: "aanya.sharma@example.com",
   phone: "+91 98222 33445",
   role: "partner",
   partnerId: "DM-PTR-10024",
   age: 24,
+  dob: "2000-05-14",
+  fullAddress: "Flat 402, Pali Hill, Bandra West",
   city: "Maharashtra",
   state: "Maharashtra",
   isAgeVerified: true,
   authProvider: "google",
+  googleVerified: true,
+  hasPaidRegistrationFee: true,
   avatarUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
   createdAt: "2026-01-15T10:00:00Z"
 };
@@ -336,6 +349,112 @@ export function savePartnerApplications(apps: PartnerApplication[]) {
   if (typeof window !== "undefined") {
     localStorage.setItem(PARTNERS_KEY, JSON.stringify(apps));
   }
+}
+
+// User Persistence Helpers
+export function getStoredUsers(): User[] {
+  if (typeof window === "undefined") return [DEMO_CLIENT, DEMO_COMPANION_USER];
+  try {
+    const raw = localStorage.getItem(USERS_KEY);
+    if (!raw) {
+      localStorage.setItem(USERS_KEY, JSON.stringify([DEMO_CLIENT, DEMO_COMPANION_USER]));
+      return [DEMO_CLIENT, DEMO_COMPANION_USER];
+    }
+    return JSON.parse(raw);
+  } catch {
+    return [DEMO_CLIENT, DEMO_COMPANION_USER];
+  }
+}
+
+export function saveUsers(users: User[]) {
+  if (typeof window !== "undefined") {
+    localStorage.setItem(USERS_KEY, JSON.stringify(users));
+  }
+}
+
+// Secure SHA-256 password hash (Client & Server compatible)
+export async function hashPassword(password: string): Promise<string> {
+  if (typeof window !== "undefined" && window.crypto && window.crypto.subtle) {
+    const msgUint8 = new TextEncoder().encode(password);
+    const hashBuffer = await window.crypto.subtle.digest("SHA-256", msgUint8);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+  }
+  // Simple fallback
+  let hash = 0;
+  for (let i = 0; i < password.length; i++) {
+    hash = (hash << 5) - hash + password.charCodeAt(i);
+    hash |= 0;
+  }
+  return "hash_" + Math.abs(hash).toString(16);
+}
+
+export function findUserByCredentials(identifier: string): User | undefined {
+  const users = getStoredUsers();
+  const clean = identifier.trim().toLowerCase();
+  return users.find(
+    (u) =>
+      u.email.toLowerCase() === clean ||
+      (u.username && u.username.toLowerCase() === clean)
+  );
+}
+
+export function findPartnerByCredentials(identifier: string): PartnerApplication | undefined {
+  const partners = getStoredPartnerApplications();
+  const clean = identifier.trim().toLowerCase();
+  return partners.find(
+    (p) =>
+      p.email.toLowerCase() === clean ||
+      (p.username && p.username.toLowerCase() === clean) ||
+      (p.mobile && p.mobile.replace(/\D/g, "") === clean.replace(/\D/g, ""))
+  );
+}
+
+export function saveOrUpdateUser(user: User): User {
+  const users = getStoredUsers();
+  const idx = users.findIndex((u) => u.id === user.id || u.email.toLowerCase() === user.email.toLowerCase());
+  if (idx !== -1) {
+    users[idx] = { ...users[idx], ...user };
+  } else {
+    users.unshift(user);
+  }
+  saveUsers(users);
+  return user;
+}
+
+export function saveOrUpdatePartner(partner: PartnerApplication): PartnerApplication {
+  const partners = getStoredPartnerApplications();
+  const idx = partners.findIndex((p) => p.id === partner.id || p.email.toLowerCase() === partner.email.toLowerCase());
+  if (idx !== -1) {
+    partners[idx] = { ...partners[idx], ...partner };
+  } else {
+    partners.unshift(partner);
+  }
+  savePartnerApplications(partners);
+  return partner;
+}
+
+export function resetPassword(role: "user" | "partner", identifier: string, newPasswordHash: string): boolean {
+  if (role === "user") {
+    const users = getStoredUsers();
+    const clean = identifier.trim().toLowerCase();
+    const idx = users.findIndex((u) => u.email.toLowerCase() === clean || (u.username && u.username.toLowerCase() === clean));
+    if (idx !== -1) {
+      users[idx].passwordHash = newPasswordHash;
+      saveUsers(users);
+      return true;
+    }
+  } else {
+    const partners = getStoredPartnerApplications();
+    const clean = identifier.trim().toLowerCase();
+    const idx = partners.findIndex((p) => p.email.toLowerCase() === clean || (p.username && p.username.toLowerCase() === clean));
+    if (idx !== -1) {
+      partners[idx].passwordHash = newPasswordHash;
+      savePartnerApplications(partners);
+      return true;
+    }
+  }
+  return false;
 }
 
 export function approvePartnerApplication(appId: string): Companion | null {

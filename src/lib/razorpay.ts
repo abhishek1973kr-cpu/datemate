@@ -63,6 +63,7 @@ export const initiateRazorpayPayment = async ({
   clientPhone,
   onSuccess,
   onFailure,
+  onDismiss,
 }: {
   amount: number; // in INR
   bookingId: string;
@@ -70,7 +71,8 @@ export const initiateRazorpayPayment = async ({
   clientEmail: string;
   clientPhone: string;
   onSuccess: (paymentId: string) => void;
-  onFailure: (err: string) => void;
+  onFailure?: (err: string) => void;
+  onDismiss?: () => void;
 }) => {
   const loaded = await loadRazorpayScript();
   const razorpayKey = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
@@ -105,7 +107,8 @@ export const initiateRazorpayPayment = async ({
       },
       modal: {
         ondismiss: function () {
-          onFailure("Payment window was dismissed by the user.");
+          if (onDismiss) onDismiss();
+          if (onFailure) onFailure("Payment window was dismissed by the user.");
         },
       },
     };
@@ -113,7 +116,9 @@ export const initiateRazorpayPayment = async ({
     const paymentObject = new window.Razorpay(options);
     paymentObject.open();
   } catch (error) {
-    onFailure(error instanceof Error ? error.message : "Payment initialization failed");
+    if (onFailure) {
+      onFailure(error instanceof Error ? error.message : "Payment initialization failed");
+    }
   }
 };
 

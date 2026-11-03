@@ -27,8 +27,14 @@ export function Navbar() {
   const navLinks = [
     { href: "/", label: "Home" },
     { href: "/#about", label: "About Us" },
-    { href: "/auth/user-register", label: "Become a User" },
-    { href: "/partner/register", label: "Become a Partner" }
+    {
+      href: user && user.hasPaidRegistrationFee ? "/dashboard/user" : "/auth/login",
+      label: "Become a User"
+    },
+    {
+      href: user && (user.role === "partner" || user.role === "companion") ? "/dashboard/partner" : "/partner/login",
+      label: "Become a Partner"
+    }
   ];
 
   return (
@@ -102,15 +108,19 @@ export function Navbar() {
                       <p className="text-[11px] text-zinc-400 truncate">{user.email}</p>
                     </div>
 
-                    <Link
-                      href="/dashboard/user"
-                      onClick={() => setUserMenuOpen(false)}
-                      className="flex items-center gap-2.5 px-4 py-2.5 text-xs text-zinc-200 hover:bg-white/5 hover:text-pink-400 transition-colors"
-                    >
-                      <LayoutDashboard className="w-4 h-4 text-pink-400" />
-                      <span>User Panel</span>
-                    </Link>
+                    {/* User Panel only for client/user role */}
+                    {(role === "client" || role === "user" || !role || role === "guest") && (
+                      <Link
+                        href="/dashboard/user"
+                        onClick={() => setUserMenuOpen(false)}
+                        className="flex items-center gap-2.5 px-4 py-2.5 text-xs text-zinc-200 hover:bg-white/5 hover:text-pink-400 transition-colors"
+                      >
+                        <LayoutDashboard className="w-4 h-4 text-pink-400" />
+                        <span>User Panel</span>
+                      </Link>
+                    )}
 
+                    {/* Partner Dashboard only for partner/companion role */}
                     {(role === "companion" || role === "partner") && (
                       <Link
                         href="/dashboard/partner"
@@ -147,13 +157,13 @@ export function Navbar() {
             ) : (
               <div className="flex items-center gap-3">
                 <Link
-                  href="/auth/user-register"
+                  href="/auth/login"
                   className="px-4 py-2 text-xs font-bold text-white rounded-xl gradient-btn transition-all shadow-md shadow-pink-500/20"
                 >
                   Become a User
                 </Link>
                 <Link
-                  href="/partner/register"
+                  href="/partner/login"
                   className="px-4 py-2 text-xs font-semibold text-zinc-200 hover:text-white rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors"
                 >
                   Become a Partner
@@ -228,14 +238,14 @@ export function Navbar() {
             ) : (
               <div className="grid grid-cols-2 gap-2 pt-2">
                 <Link
-                  href="/auth/user-register"
+                  href="/auth/login"
                   onClick={() => setMobileMenuOpen(false)}
                   className="py-2.5 text-center text-xs font-bold text-white rounded-xl gradient-btn"
                 >
                   Become a User
                 </Link>
                 <Link
-                  href="/partner/register"
+                  href="/partner/login"
                   onClick={() => setMobileMenuOpen(false)}
                   className="py-2.5 text-center text-xs font-semibold text-zinc-200 bg-white/5 rounded-xl border border-white/10"
                 >

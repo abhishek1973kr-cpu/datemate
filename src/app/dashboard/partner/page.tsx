@@ -25,7 +25,8 @@ import {
   User,
   Edit3,
   Sparkles,
-  MessageSquare
+  MessageSquare,
+  Briefcase
 } from "lucide-react";
 
 export default function PartnerDashboardPage() {
@@ -75,16 +76,60 @@ export default function PartnerDashboardPage() {
     }
   };
 
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-[#09090D] flex items-center justify-center text-white p-4">
+        <div className="max-w-md w-full rounded-3xl bg-[#12121A] border border-white/10 p-8 text-center space-y-4 shadow-2xl">
+          <div className="w-14 h-14 rounded-2xl bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center mx-auto">
+            <Briefcase className="w-7 h-7" />
+          </div>
+          <h2 className="text-xl font-bold">Partner Sign In Required</h2>
+          <p className="text-xs text-zinc-400 leading-relaxed">
+            Please log in with your partner credentials to access your companion dashboard.
+          </p>
+          <Link
+            href="/partner/login"
+            className="inline-block w-full py-3 rounded-xl font-bold text-xs text-white bg-gradient-to-r from-purple-600 to-pink-600 shadow-lg"
+          >
+            Partner Sign In
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  if (user.role === "user" || user.role === "client") {
+    return (
+      <div className="min-h-screen bg-[#09090D] flex items-center justify-center text-white p-4">
+        <div className="max-w-md w-full rounded-3xl bg-[#12121A] border border-white/10 p-8 text-center space-y-4 shadow-2xl">
+          <div className="w-14 h-14 rounded-2xl bg-pink-500/10 border border-pink-500/20 text-pink-400 flex items-center justify-center mx-auto">
+            <User className="w-7 h-7" />
+          </div>
+          <h2 className="text-xl font-bold">Client Account Detected</h2>
+          <p className="text-xs text-zinc-400 leading-relaxed">
+            You are signed in as a User. The Partner Dashboard is reserved strictly for registered companions.
+          </p>
+          <Link
+            href="/dashboard/user"
+            className="inline-block w-full py-3 rounded-xl font-bold text-xs text-white gradient-btn shadow-lg"
+          >
+            Go to User Panel
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   if (!partnerApp) {
     return (
       <div className="min-h-screen bg-[#09090D] flex items-center justify-center text-white p-4">
-        <div className="text-center space-y-4 max-w-sm">
-          <p className="text-zinc-400 text-sm">No active partner application found.</p>
+        <div className="text-center space-y-4 max-w-sm rounded-3xl bg-[#12121A] border border-white/10 p-8 shadow-2xl">
+          <p className="text-zinc-400 text-xs">No active partner application found for this account.</p>
           <Link
             href="/partner/register"
-            className="inline-block px-5 py-2.5 rounded-xl gradient-btn text-white font-bold text-xs"
+            className="inline-block w-full py-3 rounded-xl gradient-btn text-white font-bold text-xs shadow-lg"
           >
-            Register as a Partner Now
+            Register as a Partner
           </Link>
         </div>
       </div>

@@ -50,14 +50,23 @@ export interface User {
   id: string;
   name: string;
   email: string;
+  username?: string;
+  passwordHash?: string;
   phone: string;
   role: UserRole;
   age: number;
+  dob?: string;
+  fullAddress?: string;
   city?: string;
   state?: string;
   avatarUrl?: string;
   isAgeVerified: boolean;
-  authProvider?: 'google' | 'admin' | 'demo';
+  authProvider?: 'google' | 'credentials' | 'admin' | 'demo';
+  googleVerified?: boolean;
+  hasPaidRegistrationFee?: boolean; // User Registration Fee: ₹99
+  registrationTransactionId?: string;
+  registrationFeeAmount?: number;
+  registrationFeePaidAt?: string;
   partnerId?: string;
   createdAt: string;
 }
@@ -69,6 +78,10 @@ export type PartnerStatus = 'pending' | 'approved' | 'rejected' | 'suspended';
 export interface PartnerApplication {
   id: string; // e.g. "DM-PTR-83921"
   userId?: string;
+  username?: string;
+  passwordHash?: string;
+  googleVerified?: boolean;
+  googleEmail?: string;
   // Step 1: Personal Details
   fullLegalName: string;
   dob: string;

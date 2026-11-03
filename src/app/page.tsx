@@ -85,22 +85,22 @@ export default function HomePage() {
               <div className="mt-6 pt-6 border-t border-white/10 space-y-2.5 text-xs text-zinc-300">
                 <div className="flex items-center gap-2.5">
                   <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                  <span>Google Authentication only (No passwords)</span>
+                  <span>Google Authentication & secure profile screening</span>
+                </div>
+                <div className="flex items-center gap-2.5">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <span>One-time ₹99 registration fee with 100% escrow protection</span>
                 </div>
                 <div className="flex items-center gap-2.5">
                   <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                   <span>Browse verified male & female companion profiles</span>
-                </div>
-                <div className="flex items-center gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                  <span>Safe public meetings & transparent pricing</span>
                 </div>
               </div>
             </div>
 
             <div className="pt-4">
               <Link
-                href={user ? "/dashboard/user" : "/auth/user-register"}
+                href={user && user.hasPaidRegistrationFee ? "/dashboard/user" : "/auth/login"}
                 className="w-full py-4 px-6 rounded-2xl font-bold text-sm text-white gradient-btn flex items-center justify-center gap-2 shadow-lg shadow-pink-500/25 tracking-wide transition-all group-hover:shadow-pink-500/40"
               >
                 <span>Become a User</span>
@@ -137,11 +137,11 @@ export default function HomePage() {
               <div className="mt-6 pt-6 border-t border-white/10 space-y-2.5 text-xs text-zinc-300">
                 <div className="flex items-center gap-2.5">
                   <CheckCircle2 className="w-4 h-4 text-purple-400 shrink-0" />
-                  <span>Simple registration with 2–5 profile photos</span>
+                  <span>Partner login & separate companion portal</span>
                 </div>
                 <div className="flex items-center gap-2.5">
                   <CheckCircle2 className="w-4 h-4 text-purple-400 shrink-0" />
-                  <span>Secure Aadhaar verification & privacy protection</span>
+                  <span>Google identity verification & secure login credentials</span>
                 </div>
                 <div className="flex items-center gap-2.5">
                   <CheckCircle2 className="w-4 h-4 text-purple-400 shrink-0" />
@@ -152,7 +152,7 @@ export default function HomePage() {
 
             <div className="pt-4">
               <Link
-                href="/partner/register"
+                href={user && user.role === "partner" ? "/dashboard/partner" : "/partner/login"}
                 className="w-full py-4 px-6 rounded-2xl font-bold text-sm text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 flex items-center justify-center gap-2 shadow-lg shadow-purple-500/25 tracking-wide transition-all group-hover:shadow-purple-500/40"
               >
                 <span>Become a Partner</span>

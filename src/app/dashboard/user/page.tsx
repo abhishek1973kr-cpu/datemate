@@ -34,7 +34,8 @@ import {
   Phone,
   Send,
   Info,
-  Building
+  Building,
+  Briefcase
 } from "lucide-react";
 
 export default function UserDashboardPage() {
@@ -175,6 +176,73 @@ export default function UserDashboardPage() {
     setTicketDetails("");
     setTimeout(() => setTicketSuccess(false), 4000);
   };
+
+  // Route protection
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-[#09090D] flex items-center justify-center p-4 text-white">
+        <div className="max-w-md w-full rounded-3xl bg-[#12121A] border border-white/10 p-8 text-center space-y-4 shadow-2xl">
+          <div className="w-14 h-14 rounded-2xl bg-pink-500/10 border border-pink-500/20 text-pink-400 flex items-center justify-center mx-auto">
+            <User className="w-7 h-7" />
+          </div>
+          <h2 className="text-xl font-bold">Authentication Required</h2>
+          <p className="text-xs text-zinc-400 leading-relaxed">
+            Please sign in to access your User Dashboard and manage bookings.
+          </p>
+          <Link
+            href="/auth/login"
+            className="inline-block w-full py-3 rounded-xl font-bold text-xs text-white gradient-btn shadow-lg"
+          >
+            Sign In as User
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  if (user.role === "partner") {
+    return (
+      <div className="min-h-screen bg-[#09090D] flex items-center justify-center p-4 text-white">
+        <div className="max-w-md w-full rounded-3xl bg-[#12121A] border border-white/10 p-8 text-center space-y-4 shadow-2xl">
+          <div className="w-14 h-14 rounded-2xl bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center mx-auto">
+            <Briefcase className="w-7 h-7" />
+          </div>
+          <h2 className="text-xl font-bold">Partner Account Detected</h2>
+          <p className="text-xs text-zinc-400 leading-relaxed">
+            You are currently signed in as a Partner. The User Panel is reserved for clients booking companionship.
+          </p>
+          <Link
+            href="/dashboard/partner"
+            className="inline-block w-full py-3 rounded-xl font-bold text-xs text-white bg-gradient-to-r from-purple-600 to-pink-600 shadow-lg"
+          >
+            Go to Partner Dashboard
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user.hasPaidRegistrationFee) {
+    return (
+      <div className="min-h-screen bg-[#09090D] flex items-center justify-center p-4 text-white">
+        <div className="max-w-md w-full rounded-3xl bg-[#12121A] border border-white/10 p-8 text-center space-y-4 shadow-2xl">
+          <div className="w-14 h-14 rounded-2xl bg-pink-500/10 border border-pink-500/20 text-pink-400 flex items-center justify-center mx-auto">
+            <CreditCard className="w-7 h-7" />
+          </div>
+          <h2 className="text-xl font-bold">One-Time Registration Fee Pending</h2>
+          <p className="text-xs text-zinc-400 leading-relaxed">
+            Please complete the one-time ₹99 user registration fee to activate companion discovery and booking.
+          </p>
+          <Link
+            href="/auth/user-register?step=payment"
+            className="inline-block w-full py-3 rounded-xl font-bold text-xs text-white gradient-btn shadow-lg"
+          >
+            Pay ₹99 & Activate Account
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#09090D] py-8 sm:py-12 text-white">
