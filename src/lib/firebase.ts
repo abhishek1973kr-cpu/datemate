@@ -189,3 +189,4 @@ export async function firestoreSaveBooking(booking: Booking): Promise<void> {
 }
 
 export { app, auth, db, storage };
+
