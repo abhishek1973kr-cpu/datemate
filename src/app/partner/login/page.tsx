@@ -123,7 +123,7 @@ export default function PartnerLoginPage() {
                 <input
                   type="text"
                   required
-                  placeholder="e.g. aanya or aanya.sharma@example.com"
+                  placeholder="Enter your registered username or email"
                   value={identifier}
                   onChange={(e) => setIdentifier(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 text-xs rounded-xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 focus:outline-none focus:border-purple-500 transition-colors"
@@ -185,30 +185,17 @@ export default function PartnerLoginPage() {
             </button>
           </form>
 
-          {/* Demo Companion Quick Fill */}
-          <div className="p-3 rounded-2xl bg-white/5 border border-white/10 text-center">
-            <span className="text-[11px] text-zinc-400 block mb-1.5">Demo Partner Testing:</span>
-            <button
-              type="button"
-              onClick={() => {
-                setIdentifier("aanya.sharma@example.com");
-                setPassword("partner123");
-              }}
-              className="text-xs text-purple-300 hover:underline font-semibold"
-            >
-              Autofill Demo Partner (Aanya Sharma)
-            </button>
-          </div>
-
           {/* Don't have an account? Sign Up */}
-          <div className="pt-4 border-t border-white/10 text-center text-xs text-zinc-400">
-            Don&apos;t have an account?{" "}
+          <div className="pt-4 border-t border-white/10 space-y-3 text-center">
+            <span className="text-xs text-zinc-400 block">
+              New companion wanting to earn with DateMate?
+            </span>
             <Link
               href="/partner/register"
-              className="text-purple-400 font-bold hover:text-purple-300 hover:underline inline-flex items-center gap-1"
+              className="w-full py-3 px-4 rounded-xl font-bold text-xs text-white bg-white/10 hover:bg-white/15 border border-white/10 flex items-center justify-center gap-2 transition-all"
             >
-              <span>Sign Up</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              <span>Apply as a Partner (Sign Up)</span>
+              <ArrowRight className="w-3.5 h-3.5 text-purple-400" />
             </Link>
           </div>
         </div>
@@ -244,7 +231,7 @@ export default function PartnerLoginPage() {
                 <input
                   type="text"
                   required
-                  placeholder="e.g. aanya.sharma@example.com"
+                  placeholder="Enter your registered email or username"
                   value={forgotIdentifier}
                   onChange={(e) => setForgotIdentifier(e.target.value)}
                   className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-purple-500"

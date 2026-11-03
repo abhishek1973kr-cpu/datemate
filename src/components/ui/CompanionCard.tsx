@@ -75,13 +75,6 @@ export function CompanionCard({ companion, onBookNow }: CompanionCardProps) {
             </div>
           )}
 
-          {/* Demo Badge if demo data */}
-          {companion.isDemo && (
-            <div className="absolute bottom-3 left-3 px-2 py-0.5 rounded bg-black/60 backdrop-blur-sm border border-white/10 text-[10px] uppercase font-semibold tracking-wider text-pink-300">
-              Demo Profile
-            </div>
-          )}
-
           {/* Gradient Bottom Fade */}
           <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#13131C] via-[#13131C]/60 to-transparent"></div>
         </div>

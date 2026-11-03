@@ -149,11 +149,6 @@ export default function CompanionDetailPage() {
                     <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
                     <span>Available Today</span>
                   </div>
-                  {companion.isDemo && (
-                    <div className="px-2.5 py-0.5 rounded-full bg-pink-500/20 border border-pink-500/30 text-pink-300 text-[10px] font-bold uppercase tracking-wider">
-                      Demo Profile
-                    </div>
-                  )}
                 </div>
 
                 {companion.verificationStatus === "approved" && (

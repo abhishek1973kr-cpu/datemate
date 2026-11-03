@@ -87,10 +87,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         throw new Error("No partner account found with these credentials. Please sign up first.");
       }
 
-      // Check password if set, or allow demo companion credentials
+      // Check password securely against registered partner hash
       if (partner.passwordHash) {
         const inputHash = await hashPassword(cleanPass);
-        if (inputHash !== partner.passwordHash && cleanPass !== "partner123") {
+        if (inputHash !== partner.passwordHash) {
           throw new Error("Incorrect partner password. Please try again or use Forgot Password.");
         }
       }
@@ -127,7 +127,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       if (matched.passwordHash) {
         const inputHash = await hashPassword(cleanPass);
-        if (inputHash !== matched.passwordHash && cleanPass !== "user123") {
+        if (inputHash !== matched.passwordHash) {
           throw new Error("Incorrect user password. Please try again or reset password.");
         }
       }

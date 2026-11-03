@@ -165,7 +165,7 @@ export default function PartnerRegisterPage() {
       const res = await fetch("/api/auth/google", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email || "partner@example.com", name: fullLegalName })
+        body: JSON.stringify({ email: email || "partner@datemate.in", name: fullLegalName })
       });
       await res.json();
 
@@ -499,7 +499,7 @@ export default function PartnerRegisterPage() {
                   <input
                     type="email"
                     required
-                    placeholder="partner@example.com"
+                    placeholder="partner@gmail.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-purple-500"

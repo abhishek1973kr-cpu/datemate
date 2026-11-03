@@ -165,8 +165,8 @@ function UserRegisterContent() {
       amount: 99,
       bookingId: `REG-USER-${Date.now().toString().slice(-6)}`,
       clientName: fullName || googleName || "Client",
-      clientEmail: googleEmail || "user@example.com",
-      clientPhone: phone || "9811122334",
+      clientEmail: googleEmail || "user@datemate.in",
+      clientPhone: phone || "9999999999",
       onSuccess: async (paymentId, orderId, signature) => {
         try {
           // Server-side verification

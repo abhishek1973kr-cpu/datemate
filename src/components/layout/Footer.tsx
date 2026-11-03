@@ -77,8 +77,8 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/become-companion" className="hover:text-pink-400 transition-colors">
-                  Become a Companion
+                <Link href="/partner/register" className="hover:text-pink-400 transition-colors">
+                  Become a Partner (Companion)
                 </Link>
               </li>
               <li>
