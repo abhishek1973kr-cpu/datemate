@@ -167,7 +167,7 @@ function UserRegisterContent() {
       clientName: fullName || googleName || "Client",
       clientEmail: googleEmail || "user@example.com",
       clientPhone: phone || "9811122334",
-      onSuccess: async (paymentId) => {
+      onSuccess: async (paymentId, orderId, signature) => {
         try {
           // Server-side verification
           const res = await fetch("/api/payments/verify-user-fee", {
@@ -176,6 +176,8 @@ function UserRegisterContent() {
             body: JSON.stringify({
               userId: currentUserId,
               paymentId,
+              orderId,
+              signature,
               amount: 99
             })
           });

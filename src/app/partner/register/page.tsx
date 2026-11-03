@@ -263,7 +263,7 @@ export default function PartnerRegisterPage() {
       clientName: fullLegalName,
       clientEmail: email,
       clientPhone: mobile,
-      onSuccess: async (paymentId) => {
+      onSuccess: async (paymentId, orderId, signature) => {
         try {
           const res = await fetch("/api/payments/verify-partner-fee", {
             method: "POST",
@@ -271,6 +271,8 @@ export default function PartnerRegisterPage() {
             body: JSON.stringify({
               partnerId: generatedTempId,
               paymentId,
+              orderId,
+              signature,
               amount: 199
             })
           });

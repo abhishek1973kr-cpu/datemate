@@ -61,6 +61,7 @@ export const initiateRazorpayPayment = async ({
   clientName,
   clientEmail,
   clientPhone,
+  orderId,
   onSuccess,
   onFailure,
   onDismiss,
@@ -70,21 +71,45 @@ export const initiateRazorpayPayment = async ({
   clientName: string;
   clientEmail: string;
   clientPhone: string;
-  onSuccess: (paymentId: string) => void;
+  orderId?: string;
+  onSuccess: (paymentId: string, orderId?: string, signature?: string) => void;
   onFailure?: (err: string) => void;
   onDismiss?: () => void;
 }) => {
   const loaded = await loadRazorpayScript();
-  const razorpayKey = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
+  const razorpayKey =
+    process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_live_Tvn1jy9LtuAo1p";
 
-  if (!loaded || !razorpayKey) {
-    // Graceful fallback for test/demo mode when Razorpay credentials are not set
-    console.info("Razorpay key not detected or demo environment active. Simulating secure test payment.");
-    setTimeout(() => {
-      const mockPaymentId = `pay_mock_${Date.now().toString(36)}`;
-      onSuccess(mockPaymentId);
-    }, 1200);
+  if (!loaded) {
+    if (onFailure) {
+      onFailure("Razorpay checkout SDK could not be loaded. Please check your internet connection.");
+    }
     return;
+  }
+
+  // Generate live Razorpay Order on server if orderId is not already provided
+  let activeOrderId = orderId;
+  if (!activeOrderId) {
+    try {
+      const orderRes = await fetch("/api/payments/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount,
+          currency: "INR",
+          receipt: bookingId,
+        }),
+      });
+
+      if (orderRes.ok) {
+        const orderData = await orderRes.json();
+        if (orderData.orderId) {
+          activeOrderId = orderData.orderId;
+        }
+      }
+    } catch (err) {
+      console.warn("Could not pre-create server-side Razorpay order:", err);
+    }
   }
 
   try {
@@ -93,22 +118,26 @@ export const initiateRazorpayPayment = async ({
       amount: Math.round(amount * 100), // convert to paise
       currency: "INR",
       name: "DateMate India",
-      description: `Companionship Booking #${bookingId}`,
+      description: `Payment for ${bookingId}`,
+      order_id: activeOrderId,
       prefill: {
-        name: clientName,
-        email: clientEmail,
-        contact: clientPhone,
+        name: clientName || "DateMate User",
+        email: clientEmail || "support@datemate.in",
+        contact: clientPhone || "9999999999",
       },
       theme: {
         color: "#EC4899",
       },
       handler: function (response) {
-        onSuccess(response.razorpay_payment_id);
+        onSuccess(
+          response.razorpay_payment_id,
+          response.razorpay_order_id || activeOrderId,
+          response.razorpay_signature
+        );
       },
       modal: {
         ondismiss: function () {
           if (onDismiss) onDismiss();
-          if (onFailure) onFailure("Payment window was dismissed by the user.");
         },
       },
     };
@@ -121,4 +150,3 @@ export const initiateRazorpayPayment = async ({
     }
   }
 };
-
