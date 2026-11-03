@@ -24,225 +24,49 @@ export const DEMO_ADMIN: User = {
   createdAt: "2026-01-01T00:00:00Z"
 };
 
-export const DEMO_CLIENT: User = {
-  id: "user-client-1",
-  name: "Karan Singhal",
-  username: "karan",
-  email: "karan.singhal@example.com",
-  phone: "+91 98111 22334",
-  role: "user",
-  age: 26,
-  dob: "1998-04-12",
-  fullAddress: "Flat 502, Green Glen Layout, Bellandur",
-  city: "Delhi",
-  state: "Delhi",
-  isAgeVerified: true,
-  authProvider: "google",
-  googleVerified: true,
-  hasPaidRegistrationFee: true,
-  registrationTransactionId: "pay_rzp_usr_99_demo",
-  registrationFeeAmount: 99,
-  registrationFeePaidAt: "2026-02-01T10:05:00Z",
-  avatarUrl: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80",
-  createdAt: "2026-02-01T10:00:00Z"
-};
+// No AI-generated or mock partner applications
+export const INITIAL_PARTNERS: PartnerApplication[] = [];
 
-export const DEMO_COMPANION_USER: User = {
-  id: "user-comp-1",
-  name: "Aanya Sharma",
-  username: "aanya",
-  email: "aanya.sharma@example.com",
-  phone: "+91 98222 33445",
-  role: "partner",
-  partnerId: "DM-PTR-10024",
-  age: 24,
-  dob: "2000-05-14",
-  fullAddress: "Flat 402, Pali Hill, Bandra West",
-  city: "Maharashtra",
-  state: "Maharashtra",
-  isAgeVerified: true,
-  authProvider: "google",
-  googleVerified: true,
-  hasPaidRegistrationFee: true,
-  avatarUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
-  createdAt: "2026-01-15T10:00:00Z"
-};
+// No fake demo bookings
+const INITIAL_BOOKINGS: Booking[] = [];
 
-export const INITIAL_PARTNERS: PartnerApplication[] = [
-  {
-    id: "DM-PTR-10024",
-    userId: "user-comp-1",
-    fullLegalName: "Aanya Sharma",
-    dob: "2000-05-14",
-    gender: "female",
-    mobile: "+91 98222 33445",
-    email: "aanya.sharma@example.com",
-    residentialAddress: "Flat 402, Pali Hill, Bandra West",
-    city: "Maharashtra",
-    state: "Maharashtra",
-    pincode: "400050",
-    photos: [
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80"
-    ],
-    aadhaarNumber: "7849-3829-1920",
-    maskedAadhaar: "XXXX-XXXX-1920",
-    aadhaarDocumentUrl: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80",
-    aadhaarConsent: true,
-    feeAmount: 199,
-    feePaid: true,
-    feeTransactionId: "pay_rzp_ptr_10024",
-    feePaidAt: "2026-01-15T10:05:00Z",
-    status: "approved",
-    submittedAt: "2026-01-15T10:00:00Z",
-    approvedAt: "2026-01-15T12:00:00Z",
-    headline: "Art curator, foodie & enthusiastic conversationalist",
-    bio: "Passionate about world cinema, literature, and art exhibitions in Mumbai.",
-    hourlyPrice: 1500,
-    price30Min: 900,
-    services: ["Fine Dining & Cafes", "Cinema & Theater", "Social & Family Events"],
-    languages: ["English", "Hindi", "Marathi"],
-    interests: ["Contemporary Art", "Cinema", "Italian Cuisine"],
-    isAvailable: true,
-    isActive: true,
-    companionId: "comp-1"
-  },
-  {
-    id: "DM-PTR-10492",
-    fullLegalName: "Neha Chaurasia",
-    dob: "2001-08-22",
-    gender: "female",
-    mobile: "+91 98350 49122",
-    email: "neha.patna@example.com",
-    residentialAddress: "House 12, Boring Canal Road, Near Maurya Lok",
-    city: "Patna",
-    state: "Bihar",
-    pincode: "800001",
-    photos: [
-      "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80"
-    ],
-    aadhaarNumber: "9123-4567-8901",
-    maskedAadhaar: "XXXX-XXXX-8901",
-    aadhaarDocumentUrl: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80",
-    aadhaarConsent: true,
-    feeAmount: 199,
-    feePaid: true,
-    feeTransactionId: "pay_rzp_ptr_10492",
-    feePaidAt: "2026-11-02T18:30:00Z",
-    status: "pending",
-    submittedAt: "2026-11-02T18:25:00Z",
-    headline: "Literature graduate & warm cafe conversationalist",
-    bio: "Well-spoken and courteous companion available for cafe dates and dining in Patna.",
-    hourlyPrice: 1200,
-    price30Min: 700,
-    services: ["Fine Dining & Cafes", "Coffee & Deep Conversation"],
-    languages: ["Hindi", "English", "Bhojpuri"],
-    interests: ["Poetry", "Cafes", "Music"],
-    isAvailable: true,
-    isActive: true
-  }
-];
+// No fake demo chat messages
+const INITIAL_MESSAGES: ChatMessage[] = [];
 
-const INITIAL_BOOKINGS: Booking[] = [
-  {
-    id: "bk-1001",
-    clientId: "user-client-1",
-    clientName: "Karan Singhal",
-    clientPhone: "+91 98111 22334",
-    companionId: "comp-1",
-    companionName: "Aanya Sharma",
-    companionPhoto: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80",
-    companionCity: "Mumbai",
-    date: "2026-11-10",
-    time: "19:00",
-    durationHours: 3,
-    activity: "Fine Dining & Cafes",
-    meetingLocation: "Bastian, Bandra West, Mumbai",
-    hourlyPrice: 1500,
-    subtotal: 4500,
-    platformFee: 450,
-    tax: 225,
-    totalAmount: 5175,
-    status: "confirmed",
-    paymentStatus: "paid",
-    paymentId: "pay_rzp_demo_101",
-    specialNotes: "Looking forward to great continental food and music conversation.",
-    createdAt: "2026-11-01T14:30:00Z"
-  },
-  {
-    id: "bk-1002",
-    clientId: "user-client-1",
-    clientName: "Karan Singhal",
-    clientPhone: "+91 98111 22334",
-    companionId: "comp-3",
-    companionName: "Rhea Sen",
-    companionPhoto: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=800&q=80",
-    companionCity: "Delhi NCR",
-    date: "2026-11-15",
-    time: "15:00",
-    durationHours: 2,
-    activity: "Shopping & Styling",
-    meetingLocation: "Select CITYWALK Mall, Saket, New Delhi",
-    hourlyPrice: 1600,
-    subtotal: 3200,
-    platformFee: 320,
-    tax: 160,
-    totalAmount: 3680,
-    status: "pending",
-    paymentStatus: "pending",
-    specialNotes: "Need wardrobe advice for winter wear.",
-    createdAt: "2026-11-02T16:00:00Z"
-  }
-];
+// No fake safety reports
+const INITIAL_REPORTS: SafetyReport[] = [];
 
-const INITIAL_MESSAGES: ChatMessage[] = [
-  {
-    id: "msg-1",
-    bookingId: "bk-1001",
-    senderId: "user-client-1",
-    senderName: "Karan Singhal",
-    receiverId: "comp-1",
-    text: "Hi Aanya! Really excited for our dinner at Bastian next Friday.",
-    timestamp: "2026-11-01T15:00:00Z"
-  },
-  {
-    id: "msg-2",
-    bookingId: "bk-1001",
-    senderId: "comp-1",
-    senderName: "Aanya Sharma",
-    receiverId: "user-client-1",
-    text: "Hey Karan! Looking forward to it too. I have noted the reservation time. See you at the main reception entrance at 7:00 PM!",
-    timestamp: "2026-11-01T15:15:00Z"
-  }
-];
-
-const INITIAL_REPORTS: SafetyReport[] = [
-  {
-    id: "rep-1",
-    reporterId: "user-comp-1",
-    reporterName: "Aanya Sharma",
-    reportedId: "user-999",
-    reportedName: "Ramesh K.",
-    reason: "Offensive request in inquiry",
-    description: "User asked for private home visit which violates DateMate public space policy. Inquiries blocked immediately.",
-    status: "investigating",
-    createdAt: "2026-11-01T18:00:00Z"
-  }
-];
-
-// Helper methods with localStorage fallback
+// Helper methods with localStorage fallback and automated purge of any legacy AI profiles
 export function getStoredCompanions(): Companion[] {
   if (typeof window === "undefined") return INITIAL_COMPANIONS;
   try {
     const raw = localStorage.getItem(COMPANIONS_KEY);
     if (!raw) {
-      localStorage.setItem(COMPANIONS_KEY, JSON.stringify(INITIAL_COMPANIONS));
-      return INITIAL_COMPANIONS;
+      localStorage.setItem(COMPANIONS_KEY, JSON.stringify([]));
+      return [];
     }
-    return JSON.parse(raw);
+    const parsed: Companion[] = JSON.parse(raw);
+    // Delete every AI generated or mock profile
+    const clean = parsed.filter(
+      (c) =>
+        !c.isDemo &&
+        !c.id.startsWith("comp-1") &&
+        !c.id.startsWith("comp-2") &&
+        !c.id.startsWith("comp-3") &&
+        !c.id.startsWith("comp-4") &&
+        !c.id.startsWith("comp-5") &&
+        !c.id.startsWith("comp-6") &&
+        !c.id.startsWith("comp-7") &&
+        !c.id.startsWith("comp-patna") &&
+        !c.id.startsWith("comp-ranchi") &&
+        !c.id.startsWith("comp-pending")
+    );
+    if (clean.length !== parsed.length) {
+      localStorage.setItem(COMPANIONS_KEY, JSON.stringify(clean));
+    }
+    return clean;
   } catch {
-    return INITIAL_COMPANIONS;
+    return [];
   }
 }
 
@@ -257,12 +81,17 @@ export function getStoredBookings(): Booking[] {
   try {
     const raw = localStorage.getItem(BOOKINGS_KEY);
     if (!raw) {
-      localStorage.setItem(BOOKINGS_KEY, JSON.stringify(INITIAL_BOOKINGS));
-      return INITIAL_BOOKINGS;
+      localStorage.setItem(BOOKINGS_KEY, JSON.stringify([]));
+      return [];
     }
-    return JSON.parse(raw);
+    const parsed: Booking[] = JSON.parse(raw);
+    const clean = parsed.filter((b) => !b.id.startsWith("bk-100"));
+    if (clean.length !== parsed.length) {
+      localStorage.setItem(BOOKINGS_KEY, JSON.stringify(clean));
+    }
+    return clean;
   } catch {
-    return INITIAL_BOOKINGS;
+    return [];
   }
 }
 
@@ -281,12 +110,17 @@ export function getStoredReviews(): Review[] {
   try {
     const raw = localStorage.getItem(REVIEWS_KEY);
     if (!raw) {
-      localStorage.setItem(REVIEWS_KEY, JSON.stringify(DEMO_REVIEWS));
-      return DEMO_REVIEWS;
+      localStorage.setItem(REVIEWS_KEY, JSON.stringify([]));
+      return [];
     }
-    return JSON.parse(raw);
+    const parsed: Review[] = JSON.parse(raw);
+    const clean = parsed.filter((r) => !r.id.startsWith("rev-"));
+    if (clean.length !== parsed.length) {
+      localStorage.setItem(REVIEWS_KEY, JSON.stringify(clean));
+    }
+    return clean;
   } catch {
-    return DEMO_REVIEWS;
+    return [];
   }
 }
 
@@ -301,12 +135,17 @@ export function getStoredMessages(): ChatMessage[] {
   try {
     const raw = localStorage.getItem(MESSAGES_KEY);
     if (!raw) {
-      localStorage.setItem(MESSAGES_KEY, JSON.stringify(INITIAL_MESSAGES));
-      return INITIAL_MESSAGES;
+      localStorage.setItem(MESSAGES_KEY, JSON.stringify([]));
+      return [];
     }
-    return JSON.parse(raw);
+    const parsed: ChatMessage[] = JSON.parse(raw);
+    const clean = parsed.filter((m) => !m.id.startsWith("msg-"));
+    if (clean.length !== parsed.length) {
+      localStorage.setItem(MESSAGES_KEY, JSON.stringify(clean));
+    }
+    return clean;
   } catch {
-    return INITIAL_MESSAGES;
+    return [];
   }
 }
 
@@ -321,12 +160,17 @@ export function getStoredReports(): SafetyReport[] {
   try {
     const raw = localStorage.getItem(REPORTS_KEY);
     if (!raw) {
-      localStorage.setItem(REPORTS_KEY, JSON.stringify(INITIAL_REPORTS));
-      return INITIAL_REPORTS;
+      localStorage.setItem(REPORTS_KEY, JSON.stringify([]));
+      return [];
     }
-    return JSON.parse(raw);
+    const parsed: SafetyReport[] = JSON.parse(raw);
+    const clean = parsed.filter((r) => !r.id.startsWith("rep-"));
+    if (clean.length !== parsed.length) {
+      localStorage.setItem(REPORTS_KEY, JSON.stringify(clean));
+    }
+    return clean;
   } catch {
-    return INITIAL_REPORTS;
+    return [];
   }
 }
 
@@ -341,12 +185,24 @@ export function getStoredPartnerApplications(): PartnerApplication[] {
   try {
     const raw = localStorage.getItem(PARTNERS_KEY);
     if (!raw) {
-      localStorage.setItem(PARTNERS_KEY, JSON.stringify(INITIAL_PARTNERS));
-      return INITIAL_PARTNERS;
+      localStorage.setItem(PARTNERS_KEY, JSON.stringify([]));
+      return [];
     }
-    return JSON.parse(raw);
+    const parsed: PartnerApplication[] = JSON.parse(raw);
+    // Delete any AI generated / mock partner applications
+    const clean = parsed.filter(
+      (p) =>
+        p.email &&
+        !p.email.includes("example.com") &&
+        !p.id.startsWith("DM-PTR-10024") &&
+        !p.id.startsWith("DM-PTR-10492")
+    );
+    if (clean.length !== parsed.length) {
+      localStorage.setItem(PARTNERS_KEY, JSON.stringify(clean));
+    }
+    return clean;
   } catch {
-    return INITIAL_PARTNERS;
+    return [];
   }
 }
 
@@ -358,16 +214,27 @@ export function savePartnerApplications(apps: PartnerApplication[]) {
 
 // User Persistence Helpers
 export function getStoredUsers(): User[] {
-  if (typeof window === "undefined") return [DEMO_CLIENT, DEMO_COMPANION_USER];
+  if (typeof window === "undefined") return [];
   try {
     const raw = localStorage.getItem(USERS_KEY);
     if (!raw) {
-      localStorage.setItem(USERS_KEY, JSON.stringify([DEMO_CLIENT, DEMO_COMPANION_USER]));
-      return [DEMO_CLIENT, DEMO_COMPANION_USER];
+      localStorage.setItem(USERS_KEY, JSON.stringify([]));
+      return [];
     }
-    return JSON.parse(raw);
+    const parsed: User[] = JSON.parse(raw);
+    const clean = parsed.filter(
+      (u) =>
+        u.email &&
+        !u.email.includes("example.com") &&
+        u.id !== "user-client-1" &&
+        u.id !== "user-comp-1"
+    );
+    if (clean.length !== parsed.length) {
+      localStorage.setItem(USERS_KEY, JSON.stringify(clean));
+    }
+    return clean;
   } catch {
-    return [DEMO_CLIENT, DEMO_COMPANION_USER];
+    return [];
   }
 }
 

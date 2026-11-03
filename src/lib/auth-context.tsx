@@ -3,8 +3,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { User, UserRole, PartnerApplication } from "@/types";
 import {
-  DEMO_CLIENT,
-  DEMO_COMPANION_USER,
   getStoredUsers,
   saveUsers,
   findUserByCredentials,
@@ -112,7 +110,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         authProvider: "credentials",
         googleVerified: partner.googleVerified ?? true,
         hasPaidRegistrationFee: true,
-        avatarUrl: partner.photos && partner.photos.length > 0 ? partner.photos[0] : DEMO_COMPANION_USER.avatarUrl,
+        avatarUrl: partner.photos && partner.photos.length > 0 ? partner.photos[0] : "",
         createdAt: partner.submittedAt || new Date().toISOString()
       };
 
@@ -243,7 +241,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       throw new Error("Must be at least 18 years of age to register on DateMate.");
     }
 
-    const current = user || DEMO_CLIENT;
+    if (!user) {
+      throw new Error("No active user session found. Please sign in with Google.");
+    }
+
+    const current = user;
     const updatedUser: User = {
       ...current,
       name: userData.name,
@@ -266,7 +268,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Record ₹99 User Registration Fee
   const recordUserRegistrationFee = async (transactionId: string, amount: number = 99): Promise<User> => {
-    const current = user || DEMO_CLIENT;
+    if (!user) {
+      throw new Error("No active user session found to record fee.");
+    }
+
+    const current = user;
     const updatedUser: User = {
       ...current,
       hasPaidRegistrationFee: true,
