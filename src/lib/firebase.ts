@@ -188,5 +188,47 @@ export async function firestoreSaveBooking(booking: Booking): Promise<void> {
   }
 }
 
+/**
+ * Real-time companion subscriber for live Admin Panel sync
+ */
+export function firestoreSubscribeCompanions(callback: (companions: any[]) => void) {
+  if (!db || !isFirebaseConfigured) return null;
+  try {
+    const q = collection(db, "companions");
+    const { onSnapshot } = require("firebase/firestore");
+    return onSnapshot(q, (snapshot: any) => {
+      const list: any[] = [];
+      snapshot.forEach((d: any) => {
+        list.push({ ...d.data(), id: d.id });
+      });
+      callback(list);
+    });
+  } catch (e) {
+    console.warn("firestoreSubscribeCompanions notice:", e);
+    return null;
+  }
+}
+
+/**
+ * Real-time location availability subscriber for live Admin Panel sync
+ */
+export function firestoreSubscribeLocations(callback: (locations: any[]) => void) {
+  if (!db || !isFirebaseConfigured) return null;
+  try {
+    const q = collection(db, "locations");
+    const { onSnapshot } = require("firebase/firestore");
+    return onSnapshot(q, (snapshot: any) => {
+      const list: any[] = [];
+      snapshot.forEach((d: any) => {
+        list.push({ ...d.data(), id: d.id });
+      });
+      callback(list);
+    });
+  } catch (e) {
+    console.warn("firestoreSubscribeLocations notice:", e);
+    return null;
+  }
+}
+
 export { app, auth, db, storage };
 

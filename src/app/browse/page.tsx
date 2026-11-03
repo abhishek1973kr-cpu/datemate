@@ -4,6 +4,7 @@ import React, { useState, useEffect, useMemo, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Companion, SUPPORTED_LOCATIONS } from "@/types";
 import { getStoredCompanions } from "@/lib/store";
+import { firestoreSubscribeCompanions, firestoreSubscribeLocations } from "@/lib/firebase";
 import { ACTIVITY_OPTIONS } from "@/lib/demo-data";
 import { CompanionCard } from "@/components/ui/CompanionCard";
 import {
@@ -63,6 +64,7 @@ function BrowseContent() {
   const [selectedActivity, setSelectedActivity] = useState<string>("all");
   const [sortBy, setSortBy] = useState<"rating" | "price_asc" | "price_desc">("rating");
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+  const [disabledLocations, setDisabledLocations] = useState<string[]>([]);
 
   useEffect(() => {
     // Only approved and active profiles should appear publicly
@@ -70,9 +72,42 @@ function BrowseContent() {
       (c) => c.verificationStatus === "approved" && (c.isActive !== false)
     );
     setCompanions(list);
+
+    // Live Real-Time Firestore Synchronization with Admin Panel
+    const unsubC = firestoreSubscribeCompanions((firestoreList) => {
+      if (firestoreList && firestoreList.length > 0) {
+        const approved = firestoreList.filter(
+          (c: any) => c.verificationStatus === "approved" && (c.isActive !== false)
+        );
+        setCompanions(approved);
+      }
+    });
+
+    const unsubL = firestoreSubscribeLocations((locList) => {
+      if (locList && locList.length > 0) {
+        const disabled = locList
+          .filter((l: any) => l.isAvailable === false)
+          .map((l: any) => (l.cityFilter || l.name).toLowerCase());
+        setDisabledLocations(disabled);
+      }
+    });
+
+    return () => {
+      if (unsubC) unsubC();
+      if (unsubL) unsubL();
+    };
   }, []);
 
-  const isLocationSupported = isSupportedLocation(selectedCity);
+  const isLocationSupported = useMemo(() => {
+    if (!isSupportedLocation(selectedCity)) return false;
+    if (selectedCity !== "all") {
+      const c = selectedCity.toLowerCase();
+      if (disabledLocations.some((d) => c.includes(d) || d.includes(c))) {
+        return false;
+      }
+    }
+    return true;
+  }, [selectedCity, disabledLocations]);
 
   // Filtered & sorted companion list
   const filteredCompanions = useMemo(() => {
