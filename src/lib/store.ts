@@ -2,6 +2,7 @@
 
 import { Companion, Booking, Review, ChatMessage, SafetyReport, User, PartnerApplication } from "@/types";
 import { INITIAL_COMPANIONS, DEMO_REVIEWS } from "./demo-data";
+import { firestoreSyncUser, firestoreSyncPartner, firestoreSaveBooking } from "./firebase";
 
 const COMPANIONS_KEY = "datemate_companions_v2";
 const BOOKINGS_KEY = "datemate_bookings_v2";
@@ -268,6 +269,10 @@ export function getStoredBookings(): Booking[] {
 export function saveBookings(bookings: Booking[]) {
   if (typeof window !== "undefined") {
     localStorage.setItem(BOOKINGS_KEY, JSON.stringify(bookings));
+    // Asynchronously sync latest booking to Firestore if available
+    if (bookings.length > 0) {
+      firestoreSaveBooking(bookings[0]).catch(() => {});
+    }
   }
 }
 
@@ -419,6 +424,8 @@ export function saveOrUpdateUser(user: User): User {
     users.unshift(user);
   }
   saveUsers(users);
+  // Asynchronously sync user to Firestore
+  firestoreSyncUser(user).catch(() => {});
   return user;
 }
 
@@ -431,6 +438,8 @@ export function saveOrUpdatePartner(partner: PartnerApplication): PartnerApplica
     partners.unshift(partner);
   }
   savePartnerApplications(partners);
+  // Asynchronously sync partner to Firestore
+  firestoreSyncPartner(partner).catch(() => {});
   return partner;
 }
 

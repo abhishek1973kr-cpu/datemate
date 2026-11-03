@@ -13,6 +13,7 @@ import {
   findPartnerByCredentials
 } from "@/lib/store";
 import { initiateRazorpayPayment } from "@/lib/razorpay";
+import { firebaseSignInWithGoogle } from "@/lib/firebase";
 import {
   Heart,
   Sparkles,
@@ -151,6 +152,16 @@ export default function PartnerRegisterPage() {
     setIsGoogleVerifying(true);
 
     try {
+      // Real Firebase Google OAuth Popup if keys configured
+      const fbResult = await firebaseSignInWithGoogle();
+      if (fbResult && fbResult.email) {
+        setGoogleEmail(fbResult.email);
+        setGoogleVerified(true);
+        setIsGoogleVerifying(false);
+        return;
+      }
+
+      // Backend route / fallback
       const res = await fetch("/api/auth/google", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -161,9 +172,14 @@ export default function PartnerRegisterPage() {
       setGoogleEmail(email || "partner.verified@gmail.com");
       setGoogleVerified(true);
       setIsGoogleVerifying(false);
-    } catch {
-      // Simulate OAuth verified session
-      setGoogleEmail(email);
+    } catch (err: any) {
+      if (err?.code === "auth/popup-closed-by-user") {
+        setErrorMessage("Google Sign-In popup was closed. Please try again.");
+        setIsGoogleVerifying(false);
+        return;
+      }
+      // Fallback verification for demo/testing
+      setGoogleEmail(email || "partner.verified@gmail.com");
       setGoogleVerified(true);
       setIsGoogleVerifying(false);
     }

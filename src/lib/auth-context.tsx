@@ -12,6 +12,12 @@ import {
   saveOrUpdateUser,
   hashPassword
 } from "./store";
+import {
+  firebaseSignInWithGoogle,
+  firebaseSignOut,
+  firestoreSyncUser,
+  isFirebaseConfigured
+} from "./firebase";
 
 interface GoogleProfile {
   name: string;
@@ -134,13 +140,43 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  // Google OAuth Login / Verification
+  // Google OAuth Login / Verification (Firebase Auth + Fallback)
   const loginWithGoogle = async (profile?: GoogleProfile): Promise<User> => {
-    const googleData: GoogleProfile = profile || {
-      name: "Rohit Malhotra",
-      email: "rohit.malhotra.google@gmail.com",
-      avatarUrl: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80"
-    };
+    let googleData: GoogleProfile;
+
+    if (profile) {
+      googleData = profile;
+    } else {
+      try {
+        // Attempt real Firebase Google Auth popup if credentials configured
+        const fbResult = await firebaseSignInWithGoogle();
+        if (fbResult && fbResult.email) {
+          googleData = {
+            name: fbResult.displayName || "Google User",
+            email: fbResult.email,
+            avatarUrl: fbResult.photoURL || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80"
+          };
+        } else {
+          // Seamless fallback simulation for testing/demo
+          googleData = {
+            name: "Rohit Malhotra",
+            email: "rohit.malhotra.google@gmail.com",
+            avatarUrl: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80"
+          };
+        }
+      } catch (err: any) {
+        if (err?.code === "auth/popup-closed-by-user") {
+          throw new Error("Google Sign-In popup was closed. Please try again.");
+        }
+        console.warn("Firebase Auth popup notice:", err);
+        // Fallback simulation
+        googleData = {
+          name: "Rohit Malhotra",
+          email: "rohit.malhotra.google@gmail.com",
+          avatarUrl: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80"
+        };
+      }
+    }
 
     // Check if user already exists
     const existing = findUserByCredentials(googleData.email);
@@ -152,6 +188,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         googleVerified: true
       };
       saveOrUpdateUser(updatedExisting);
+      firestoreSyncUser(updatedExisting).catch(() => {});
       setUser(updatedExisting);
       localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(updatedExisting));
       return updatedExisting;
@@ -186,6 +223,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     saveOrUpdateUser(newUser);
+    firestoreSyncUser(newUser).catch(() => {});
     setUser(newUser);
     localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(newUser));
     return newUser;
@@ -220,6 +258,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
 
     saveOrUpdateUser(updatedUser);
+    firestoreSyncUser(updatedUser).catch(() => {});
     setUser(updatedUser);
     localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(updatedUser));
     return updatedUser;
@@ -237,6 +276,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
 
     saveOrUpdateUser(updatedUser);
+    firestoreSyncUser(updatedUser).catch(() => {});
     setUser(updatedUser);
     localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(updatedUser));
     return updatedUser;
@@ -244,6 +284,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Secure Logout: Invalidate current session and return to public homepage
   const logout = () => {
+    try {
+      firebaseSignOut().catch(() => {});
+    } catch {}
     setUser(null);
     if (typeof window !== "undefined") {
       localStorage.removeItem(CURRENT_USER_KEY);

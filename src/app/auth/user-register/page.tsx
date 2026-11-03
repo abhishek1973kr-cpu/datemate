@@ -84,16 +84,10 @@ function UserRegisterContent() {
     setError("");
 
     try {
-      const mockGoogleProfile = {
-        name: "Rohit Malhotra",
-        email: "rohit.malhotra.google@gmail.com",
-        avatarUrl: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80"
-      };
-
-      const authedUser = await loginWithGoogle(mockGoogleProfile);
+      const authedUser = await loginWithGoogle();
       setGoogleName(authedUser.name);
       setGoogleEmail(authedUser.email);
-      setGoogleAvatar(authedUser.avatarUrl || mockGoogleProfile.avatarUrl);
+      setGoogleAvatar(authedUser.avatarUrl || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80");
       setFullName(authedUser.name);
 
       setTimeout(() => {
