@@ -182,23 +182,23 @@ function BrowseContent() {
 
           {/* Search Bar */}
           <div className="w-full md:w-80 relative">
-            <Search className="w-4 h-4 text-zinc-400 absolute left-3 top-3 pointer-events-none" />
+            <Search className="w-4 h-4 text-zinc-400 absolute left-3.5 top-3.5 pointer-events-none" />
             <input
               type="text"
               placeholder="Search by name, city, hobbies..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 text-xs rounded-xl bg-[#12121A] border border-white/10 text-white placeholder-zinc-500 focus:outline-none focus:border-pink-500"
+              className="w-full pl-10 pr-4 py-2.5 min-h-[44px] text-xs rounded-xl bg-[#12121A] border border-white/10 text-white placeholder-zinc-500 focus:outline-none focus:border-pink-500"
             />
           </div>
         </div>
 
         {/* State Selection Quick Tabs */}
-        <div className="mb-8 overflow-x-auto pb-2 scrollbar-none">
-          <div className="flex items-center gap-2 min-w-max">
+        <div className="mb-6 sm:mb-8 overflow-x-auto no-scrollbar pb-2">
+          <div className="flex items-center gap-2 min-w-max px-0.5">
             <button
               onClick={() => setSelectedCity("all")}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+              className={`min-h-[40px] px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 active:scale-95 ${
                 selectedCity === "all"
                   ? "gradient-btn text-white shadow-md shadow-pink-500/25"
                   : "bg-white/5 hover:bg-white/10 text-zinc-300 border border-white/10"
@@ -218,7 +218,7 @@ function BrowseContent() {
                 <button
                   key={loc}
                   onClick={() => setSelectedCity(loc)}
-                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                  className={`min-h-[40px] px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 active:scale-95 ${
                     isSelected
                       ? "gradient-btn text-white shadow-md shadow-pink-500/25"
                       : "bg-white/5 hover:bg-white/10 text-zinc-300 border border-white/10"
@@ -236,19 +236,19 @@ function BrowseContent() {
         </div>
 
         {/* Mobile Filter Toggle */}
-        <div className="md:hidden flex items-center justify-between gap-3 mb-4">
+        <div className="lg:hidden flex items-center justify-between gap-3 mb-5">
           <button
             onClick={() => setMobileFilterOpen(!mobileFilterOpen)}
-            className="flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-xl bg-white/5 border border-white/10 text-white"
+            className="flex items-center gap-2 px-4 py-2.5 min-h-[44px] text-xs font-semibold rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white active:scale-95 transition-all shadow-sm"
           >
             <SlidersHorizontal className="w-3.5 h-3.5 text-pink-400" />
             <span>Filter & Sort ({filteredCompanions.length})</span>
           </button>
           <button
             onClick={handleResetFilters}
-            className="text-xs text-zinc-400 hover:text-white"
+            className="text-xs text-zinc-400 hover:text-white px-3 py-2 min-h-[44px] flex items-center active:scale-95"
           >
-            Reset
+            Reset Filters
           </button>
         </div>
 

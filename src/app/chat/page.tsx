@@ -15,7 +15,8 @@ import {
   AlertTriangle,
   Lock,
   PhoneOff,
-  CheckCheck
+  CheckCheck,
+  ChevronLeft
 } from "lucide-react";
 
 export default function ChatPage() {
@@ -26,6 +27,7 @@ export default function ChatPage() {
   const [companionsList, setCompanionsList] = useState<Companion[]>([]);
   const [showSafetyWarning, setShowSafetyWarning] = useState(false);
   const [isBlocked, setIsBlocked] = useState(false);
+  const [showMobileChat, setShowMobileChat] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -56,7 +58,7 @@ export default function ChatPage() {
     const newMsg: ChatMessage = {
       id: `msg-${Date.now()}`,
       senderId: user?.id || "user-client-1",
-      senderName: user?.name || "Karan Singhal",
+      senderName: user?.name || "Client",
       receiverId: activeCompanion.id,
       text: inputText,
       timestamp: new Date().toISOString(),
@@ -109,9 +111,9 @@ export default function ChatPage() {
         </div>
 
         {/* Chat UI Box */}
-        <div className="rounded-3xl bg-[#12121A] border border-white/10 overflow-hidden grid grid-cols-1 md:grid-cols-3 h-[680px] shadow-2xl">
+        <div className="rounded-3xl bg-[#12121A] border border-white/10 overflow-hidden grid grid-cols-1 md:grid-cols-3 h-[calc(100vh-180px)] min-h-[500px] sm:h-[680px] shadow-2xl">
           {/* Left Companion List */}
-          <div className="border-r border-white/10 flex flex-col bg-[#0F0F17]">
+          <div className={`${showMobileChat ? "hidden md:flex" : "flex"} border-r border-white/10 flex-col bg-[#0F0F17]`}>
             <div className="p-4 border-b border-white/10">
               <h2 className="text-sm font-bold text-white">Active Conversations</h2>
               <span className="text-[10px] text-zinc-400">Booking-related messages</span>
@@ -123,8 +125,11 @@ export default function ChatPage() {
                 return (
                   <button
                     key={comp.id}
-                    onClick={() => setActiveCompanion(comp)}
-                    className={`w-full p-4 flex items-center gap-3 text-left transition-colors ${
+                    onClick={() => {
+                      setActiveCompanion(comp);
+                      setShowMobileChat(true);
+                    }}
+                    className={`w-full p-4 flex items-center gap-3 text-left transition-colors min-h-[44px] active:scale-[0.98] ${
                       isSelected ? "bg-white/10" : "hover:bg-white/5"
                     }`}
                   >
@@ -146,27 +151,36 @@ export default function ChatPage() {
           </div>
 
           {/* Right Chat Panel */}
-          <div className="md:col-span-2 flex flex-col bg-[#12121A]">
+          <div className={`${showMobileChat ? "flex" : "hidden md:flex"} md:col-span-2 flex-col bg-[#12121A]`}>
             {/* Header */}
             {activeCompanion && (
-              <div className="p-4 border-b border-white/10 flex items-center justify-between bg-[#151520]">
-                <div className="flex items-center gap-3">
+              <div className="p-3.5 sm:p-4 border-b border-white/10 flex items-center justify-between bg-[#151520]">
+                <div className="flex items-center gap-2 sm:gap-3">
+                  {/* Mobile Back Button */}
+                  <button
+                    onClick={() => setShowMobileChat(false)}
+                    className="md:hidden p-2 -ml-1 text-zinc-400 hover:text-white rounded-xl active:scale-95"
+                    aria-label="Back to conversations"
+                  >
+                    <ChevronLeft className="w-5 h-5 text-pink-400" />
+                  </button>
+
                   <div className="relative w-10 h-10 rounded-xl overflow-hidden shrink-0">
                     <Image src={activeCompanion.photos[0]} alt={activeCompanion.fullName} fill className="object-cover" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-white flex items-center gap-1.5">
+                    <h3 className="text-xs sm:text-sm font-bold text-white flex items-center gap-1.5">
                       {activeCompanion.fullName}
                       <ShieldCheck className="w-3.5 h-3.5 text-pink-400" />
                     </h3>
-                    <p className="text-[10px] text-emerald-400">Verified Companion • Responds within 10 mins</p>
+                    <p className="text-[10px] text-emerald-400">Verified • Responds fast</p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2">
                   <Link
                     href={`/companions/${activeCompanion.id}`}
-                    className="px-3 py-1.5 rounded-lg bg-pink-500/20 text-pink-300 font-bold text-[11px] hover:bg-pink-500/30"
+                    className="px-3 py-1.5 min-h-[36px] flex items-center rounded-lg bg-pink-500/20 text-pink-300 font-bold text-[11px] hover:bg-pink-500/30 active:scale-95 transition-transform"
                   >
                     View / Book
                   </Link>
@@ -191,7 +205,7 @@ export default function ChatPage() {
                 return (
                   <div key={msg.id} className={`flex ${isMe ? "justify-end" : "justify-start"}`}>
                     <div
-                      className={`max-w-[75%] rounded-2xl px-4 py-2.5 text-xs shadow-md ${
+                      className={`max-w-[85%] sm:max-w-[75%] rounded-2xl px-4 py-2.5 text-xs shadow-md ${
                         isMe
                           ? "bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-br-none"
                           : "bg-white/10 text-zinc-100 rounded-bl-none border border-white/5"
@@ -222,11 +236,12 @@ export default function ChatPage() {
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
                     placeholder="Type your message to companion..."
-                    className="flex-1 px-4 py-2.5 text-xs rounded-xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 focus:outline-none focus:border-pink-500"
+                    className="flex-1 px-4 py-2.5 text-base sm:text-xs rounded-xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 focus:outline-none focus:border-pink-500 min-h-[44px]"
                   />
                   <button
                     type="submit"
-                    className="p-2.5 rounded-xl gradient-btn text-white hover:scale-105 transition-all shadow-md"
+                    className="min-h-[44px] min-w-[44px] flex items-center justify-center p-2.5 rounded-xl gradient-btn text-white active:scale-95 transition-all shadow-md shrink-0"
+                    aria-label="Send message"
                   >
                     <Send className="w-4 h-4" />
                   </button>

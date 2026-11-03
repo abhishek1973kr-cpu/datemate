@@ -350,19 +350,19 @@ function UserRegisterContent() {
                   1. Full Name (from Google) *
                 </label>
                 <div className="relative">
-                  <User className="w-4 h-4 text-zinc-400 absolute left-3 top-3 pointer-events-none" />
+                  <User className="w-4 h-4 text-zinc-400 absolute left-3 top-3.5 pointer-events-none" />
                   <input
                     type="text"
                     required
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    className="w-full pl-9 pr-3.5 py-2.5 text-xs rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-pink-500"
+                    className="w-full pl-9 pr-3.5 py-2.5 text-base sm:text-xs rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-pink-500 min-h-[44px]"
                   />
                 </div>
               </div>
 
               {/* 2 & 5. City & State */}
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-semibold text-zinc-300 mb-1">
                     2. City *
@@ -370,7 +370,7 @@ function UserRegisterContent() {
                   <select
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
-                    className="w-full px-3 py-2.5 text-xs rounded-xl bg-[#191924] border border-white/10 text-white focus:outline-none focus:border-pink-500"
+                    className="w-full px-3 py-2.5 text-base sm:text-xs rounded-xl bg-[#191924] border border-white/10 text-white focus:outline-none focus:border-pink-500 min-h-[44px]"
                   >
                     {SUPPORTED_LOCATIONS.map((loc) => (
                       <option key={loc} value={loc}>
@@ -390,7 +390,7 @@ function UserRegisterContent() {
                     placeholder="e.g. West Bengal"
                     value={state}
                     onChange={(e) => setState(e.target.value)}
-                    className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-pink-500"
+                    className="w-full px-3.5 py-2.5 text-base sm:text-xs rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-pink-500 min-h-[44px]"
                   />
                 </div>
               </div>
@@ -401,33 +401,33 @@ function UserRegisterContent() {
                   3. Full Residential Address *
                 </label>
                 <div className="relative">
-                  <Home className="w-4 h-4 text-zinc-400 absolute left-3 top-3 pointer-events-none" />
+                  <Home className="w-4 h-4 text-zinc-400 absolute left-3 top-3.5 pointer-events-none" />
                   <input
                     type="text"
                     required
                     placeholder="Flat/House number, Apartment, Area"
                     value={fullAddress}
                     onChange={(e) => setFullAddress(e.target.value)}
-                    className="w-full pl-9 pr-3.5 py-2.5 text-xs rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-pink-500"
+                    className="w-full pl-9 pr-3.5 py-2.5 text-base sm:text-xs rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-pink-500 min-h-[44px]"
                   />
                 </div>
               </div>
 
               {/* 4 & 6. Mobile & Date of Birth */}
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-semibold text-zinc-300 mb-1">
                     4. Mobile Number (+91) *
                   </label>
                   <div className="relative">
-                    <Phone className="w-4 h-4 text-zinc-400 absolute left-3 top-3 pointer-events-none" />
+                    <Phone className="w-4 h-4 text-zinc-400 absolute left-3 top-3.5 pointer-events-none" />
                     <input
                       type="tel"
                       required
                       placeholder="10-digit number"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
-                      className="w-full pl-9 pr-3.5 py-2.5 text-xs rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-pink-500"
+                      className="w-full pl-9 pr-3.5 py-2.5 text-base sm:text-xs rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-pink-500 min-h-[44px]"
                     />
                   </div>
                 </div>
@@ -437,13 +437,13 @@ function UserRegisterContent() {
                     6. Date of Birth *
                   </label>
                   <div className="relative">
-                    <Calendar className="w-4 h-4 text-zinc-400 absolute left-3 top-3 pointer-events-none" />
+                    <Calendar className="w-4 h-4 text-zinc-400 absolute left-3 top-3.5 pointer-events-none" />
                     <input
                       type="date"
                       required
                       value={dob}
                       onChange={(e) => setDob(e.target.value)}
-                      className="w-full pl-9 pr-3.5 py-2.5 text-xs rounded-xl bg-[#191924] border border-white/10 text-white focus:outline-none focus:border-pink-500"
+                      className="w-full pl-9 pr-3.5 py-2.5 text-base sm:text-xs rounded-xl bg-[#191924] border border-white/10 text-white focus:outline-none focus:border-pink-500 min-h-[44px]"
                     />
                   </div>
                 </div>
@@ -464,11 +464,11 @@ function UserRegisterContent() {
                 </label>
               </div>
 
-              <div className="pt-2 flex items-center justify-between">
+              <div className="pt-2 flex items-center justify-between gap-3">
                 <button
                   type="button"
                   onClick={() => setStep(1)}
-                  className="px-4 py-2.5 rounded-xl text-xs font-semibold text-zinc-400 hover:text-white flex items-center gap-1.5"
+                  className="px-4 py-2.5 min-h-[48px] rounded-xl text-xs font-semibold text-zinc-400 hover:text-white flex items-center gap-1.5 active:scale-95 transition-transform"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   <span>Back</span>
@@ -477,7 +477,7 @@ function UserRegisterContent() {
                 <button
                   type="submit"
                   disabled={isSubmittingProfile}
-                  className="px-6 py-3 rounded-xl font-bold text-xs text-white gradient-btn flex items-center gap-2 shadow-lg disabled:opacity-50"
+                  className="flex-1 sm:flex-initial px-6 py-3 min-h-[48px] rounded-xl font-bold text-xs text-white gradient-btn flex items-center justify-center gap-2 shadow-lg disabled:opacity-50 active:scale-95 transition-transform"
                 >
                   {isSubmittingProfile ? (
                     <>
@@ -486,7 +486,7 @@ function UserRegisterContent() {
                     </>
                   ) : (
                     <>
-                      <span>Proceed to Registration Fee</span>
+                      <span>Proceed to Fee</span>
                       <ArrowRight className="w-4 h-4" />
                     </>
                   )}
@@ -543,7 +543,7 @@ function UserRegisterContent() {
                   type="button"
                   onClick={handlePayUserFee}
                   disabled={isPayingFee}
-                  className="w-full max-w-md mx-auto py-3.5 px-6 rounded-2xl font-bold text-xs text-white gradient-btn flex items-center justify-center gap-2 shadow-lg shadow-pink-500/25 tracking-wide disabled:opacity-50"
+                  className="w-full max-w-md mx-auto py-3.5 px-6 min-h-[48px] rounded-2xl font-bold text-xs text-white gradient-btn flex items-center justify-center gap-2 shadow-lg shadow-pink-500/25 tracking-wide disabled:opacity-50 active:scale-95 transition-transform"
                 >
                   {isPayingFee ? (
                     <>

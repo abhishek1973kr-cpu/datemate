@@ -151,17 +151,17 @@ export function CompanionCard({ companion, onBookNow }: CompanionCardProps) {
             </div>
 
             {/* View Profile & Book Now Buttons */}
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-2 pt-1">
               <Link
                 href={`/companions/${companion.id}`}
-                className="py-2 text-center text-xs font-semibold rounded-xl bg-white/10 hover:bg-white/15 text-zinc-200 border border-white/10 transition-all hover:text-white"
+                className="min-h-[44px] py-2.5 px-3 flex items-center justify-center text-center text-xs font-semibold rounded-xl bg-white/10 hover:bg-white/15 text-zinc-200 border border-white/10 transition-all active:scale-95 hover:text-white"
               >
                 View Profile
               </Link>
               <button
                 type="button"
                 onClick={handleBookClick}
-                className="py-2 text-center text-xs font-bold text-white rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 transition-all shadow-md shadow-pink-500/20"
+                className="min-h-[44px] py-2.5 px-3 flex items-center justify-center text-center text-xs font-bold text-white rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 transition-all shadow-md shadow-pink-500/20 active:scale-95"
               >
                 Book Now
               </button>

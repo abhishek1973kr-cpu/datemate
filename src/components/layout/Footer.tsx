@@ -5,7 +5,7 @@ import { INDIAN_CITIES } from "@/lib/demo-data";
 
 export function Footer() {
   return (
-    <footer className="bg-[#07070A] border-t border-white/10 text-zinc-400 text-sm">
+    <footer className="bg-[#07070A] border-t border-white/10 text-zinc-400 text-sm mb-16 md:mb-0">
       {/* Platform Safety Mandate Banner */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 border-b border-white/5">
         <div className="rounded-2xl bg-gradient-to-r from-pink-950/30 via-purple-950/30 to-zinc-900/60 p-6 border border-pink-500/20 flex flex-col md:flex-row items-center justify-between gap-6">

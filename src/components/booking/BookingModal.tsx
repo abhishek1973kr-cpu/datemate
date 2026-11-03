@@ -126,12 +126,13 @@ export function BookingModal({ companion, isOpen, onClose, onSuccess }: BookingM
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-      <div className="relative w-full max-w-2xl rounded-3xl bg-[#12121A] border border-white/15 p-6 sm:p-8 shadow-2xl text-white my-8 max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-md flex items-end sm:items-center justify-center p-0 sm:p-4">
+      <div className="relative w-full max-w-2xl rounded-t-3xl sm:rounded-3xl bg-[#12121A] border border-white/15 p-5 sm:p-8 shadow-2xl text-white max-h-[92vh] overflow-y-auto animate-slide-up">
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 p-2 rounded-full bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white transition-colors"
+          className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white flex items-center justify-center transition-colors active:scale-95"
+          aria-label="Close booking modal"
         >
           <X className="w-5 h-5" />
         </button>
@@ -360,7 +361,7 @@ export function BookingModal({ companion, isOpen, onClose, onSuccess }: BookingM
               <button
                 type="submit"
                 disabled={isProcessing}
-                className="w-full py-3.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 transition-all flex items-center justify-center gap-2 shadow-lg shadow-pink-500/25 disabled:opacity-50"
+                className="w-full min-h-[48px] py-3.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 transition-all flex items-center justify-center gap-2 shadow-lg shadow-pink-500/25 active:scale-[0.98] disabled:opacity-50"
               >
                 {isProcessing ? (
                   <>

@@ -78,7 +78,7 @@ export default function CompanionDetailPage() {
     : ["https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80"];
 
   return (
-    <div className="min-h-screen bg-[#09090D] py-8 sm:py-12 text-white">
+    <div className="min-h-screen bg-[#09090D] pt-6 pb-28 md:py-12 text-white">
       {/* Booking Modal */}
       <BookingModal
         companion={companion}
@@ -403,6 +403,25 @@ export default function CompanionDetailPage() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Mobile Fixed Bottom Booking Bar (Native app style) */}
+      <div className="md:hidden fixed bottom-14 left-0 right-0 z-30 bg-[#12121A]/95 backdrop-blur-xl border-t border-white/10 px-4 py-2.5 flex items-center justify-between gap-3 shadow-2xl">
+        <div>
+          <span className="text-[10px] uppercase font-bold text-zinc-400 block">Rate</span>
+          <div className="text-base font-black text-white flex items-baseline gap-1">
+            <span>₹{companion.hourlyPrice.toLocaleString("en-IN")}</span>
+            <span className="text-[10px] text-zinc-400 font-normal">/hr</span>
+          </div>
+        </div>
+        <button
+          type="button"
+          onClick={() => setIsBookingOpen(true)}
+          className="flex-1 max-w-[200px] min-h-[44px] py-2.5 px-4 rounded-xl font-bold text-xs text-white gradient-btn flex items-center justify-center gap-1.5 shadow-lg shadow-pink-500/25 active:scale-95 transition-all"
+        >
+          <Sparkles className="w-3.5 h-3.5" />
+          <span>Book Now</span>
+        </button>
       </div>
     </div>
   );
