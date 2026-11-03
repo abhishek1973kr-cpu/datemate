@@ -118,6 +118,32 @@ export async function firebaseSignOut(): Promise<void> {
 }
 
 // ============================================================================
+// SAFE FIRESTORE DATA SANITIZER
+// ============================================================================
+
+export function sanitizeFirestoreData<T extends Record<string, any>>(data: T): Record<string, any> {
+  if (data === null || typeof data !== "object") {
+    return data;
+  }
+  if (Array.isArray(data)) {
+    return data
+      .filter((item) => item !== undefined)
+      .map((item) => (typeof item === "object" && item !== null ? sanitizeFirestoreData(item) : item));
+  }
+  const clean: Record<string, any> = {};
+  for (const [key, val] of Object.entries(data)) {
+    if (val !== undefined) {
+      if (val !== null && typeof val === "object" && !(val instanceof Date)) {
+        clean[key] = sanitizeFirestoreData(val);
+      } else {
+        clean[key] = val;
+      }
+    }
+  }
+  return clean;
+}
+
+// ============================================================================
 // FIRESTORE CLOUD DATABASE HELPERS
 // ============================================================================
 
@@ -125,10 +151,11 @@ export async function firestoreSyncUser(user: User): Promise<void> {
   if (!db || !isFirebaseConfigured) return;
   try {
     const userRef = doc(db, "users", user.id);
-    await setDoc(userRef, {
+    const cleanUser = sanitizeFirestoreData({
       ...user,
       updatedAt: new Date().toISOString(),
-    }, { merge: true });
+    });
+    await setDoc(userRef, cleanUser, { merge: true });
   } catch (e) {
     console.warn("Firestore syncUser notice:", e);
   }
@@ -138,10 +165,11 @@ export async function firestoreSyncPartner(partner: PartnerApplication): Promise
   if (!db || !isFirebaseConfigured) return;
   try {
     const partnerRef = doc(db, "partners", partner.id);
-    await setDoc(partnerRef, {
+    const cleanPartner = sanitizeFirestoreData({
       ...partner,
       updatedAt: new Date().toISOString(),
-    }, { merge: true });
+    });
+    await setDoc(partnerRef, cleanPartner, { merge: true });
   } catch (e) {
     console.warn("Firestore syncPartner notice:", e);
   }
@@ -179,10 +207,11 @@ export async function firestoreSaveBooking(booking: Booking): Promise<void> {
   if (!db || !isFirebaseConfigured) return;
   try {
     const bookingRef = doc(db, "bookings", booking.id);
-    await setDoc(bookingRef, {
+    const cleanBooking = sanitizeFirestoreData({
       ...booking,
       createdAt: new Date().toISOString(),
-    }, { merge: true });
+    });
+    await setDoc(bookingRef, cleanBooking, { merge: true });
   } catch (e) {
     console.warn("Firestore saveBooking notice:", e);
   }
